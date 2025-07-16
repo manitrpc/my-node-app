@@ -8,12 +8,11 @@ pipeline {
   }
 
   stage('Clone Repo') {
-  steps {
-    git 'https://github.com/manitrpc/my-node-app.git'
+    steps {
+      git branch: 'main', url: 'https://github.com/manitrpc/my-node-app.git'
+    }
   }
- }
-
-
+ 
     stage('Build Docker Image') {
       steps {
         script {
