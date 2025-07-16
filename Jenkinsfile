@@ -7,12 +7,12 @@ pipeline {
     IMAGE_TAG = "latest"
   }
 
-  stages {
-    stage('Clone Repo') {
-      steps {
-        git 'https://github.com/manitrpc/my-node-app.git'
-      }
-    }
+  stage('Clone Repo') {
+  steps {
+    git 'https://github.com/manitrpc/my-node-app.git'
+  }
+ }
+
 
     stage('Build Docker Image') {
       steps {
