@@ -8,7 +8,7 @@ pipeline {
   }
 
   stages {
-    stage('Clone Repo') {
+    stage('Checkout') {
       steps {
         git branch: 'main', url: 'https://github.com/manitrpc/my-node-app.git'
       }
@@ -16,20 +16,18 @@ pipeline {
 
     stage('Build Docker Image') {
       steps {
-        script {
-          docker.build("${ECR_REGISTRY}/${ECR_REPO}:${IMAGE_TAG}")
-        }
+        sh """
+          docker build -t $ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG .
+        """
       }
     }
 
     stage('Push to ECR') {
       steps {
-        script {
-          sh """
-            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
-            docker push ${ECR_REGISTRY}/${ECR_REPO}:${IMAGE_TAG}
-          """
-        }
+        sh """
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
+          docker push $ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG
+        """
       }
     }
   }
